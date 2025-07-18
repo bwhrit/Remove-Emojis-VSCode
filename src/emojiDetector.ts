@@ -185,9 +185,19 @@ export class EmojiDetector {
             else if (after.length === 0 || after.startsWith('\n') || after.startsWith('\r\n')) {
                 trimmedBefore = before.replace(/[ \t]$/, '');
             }
-            // If emoji is between two spaces, remove one
-            else if (before.endsWith(' ') && after.startsWith(' ')) {
-                trimmedAfter = after.slice(1);
+            // If emoji is between spaces, handle different cases
+            else if (before.match(/ +$/) && after.match(/^ +/)) {
+                // Count spaces before and after
+                const spacesBefore = before.match(/ +$/)?.[0].length || 0;
+                const spacesAfter = after.match(/^ +/)?.[0].length || 0;
+                
+                // If multiple spaces on both sides, remove the spaces after emoji
+                if (spacesBefore >= 2 && spacesAfter >= 2) {
+                    trimmedAfter = after.slice(spacesAfter);
+                } else if (before.endsWith(' ') && after.startsWith(' ')) {
+                    // Single space on each side, remove one
+                    trimmedAfter = after.slice(1);
+                }
             }
             
             result = trimmedBefore + trimmedAfter;

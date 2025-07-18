@@ -1,0 +1,26 @@
+# CODEOWNERS file for Remove Emojis VS Code Extension
+# These owners will be requested for review when someone opens a pull request
+
+# Default owners for everything in the repo
+* @your-github-username
+
+# Extension source code
+/src/ @your-github-username
+
+# Tests
+/src/test/ @your-github-username
+
+# CI/CD and GitHub configurations
+/.github/ @your-github-username
+
+# Package and build files
+package.json @your-github-username
+tsconfig.json @your-github-username
+esbuild.js @your-github-username
+
+# Documentation
+*.md @your-github-username
+LICENSE @your-github-username
+
+# Scripts
+/scripts/ @your-github-username

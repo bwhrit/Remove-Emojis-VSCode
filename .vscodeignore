@@ -6,9 +6,62 @@ src/**
 .gitignore
 .yarnrc
 esbuild.js
-vsc-extension-quickstart.md
 **/tsconfig.json
 **/eslint.config.mjs
 **/*.map
 **/*.ts
 **/.vscode-test.*
+
+# Development files
+.claude/
+CLAUDE.md
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Documentation that shouldn't be in the package
+docs/
+PUBLISHING.md
+branch-protection.md
+vsc-extension-quickstart.md
+
+# GitHub specific files
+.github/
+scripts/
+to-be-done/
+
+# Test files
+test-sample.txt
+**/*.test.js
+**/test/**
+
+# Build and config files
+.eslintrc*
+.prettierrc*
+.editorconfig
+*.vsix
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Git files
+.git/
+.gitattributes
+
+# CI/CD files
+.travis.yml
+.gitlab-ci.yml
+azure-pipelines.yml
+
+# Other unnecessary files
+TODO.md
+*.log
+.env
+.env.*

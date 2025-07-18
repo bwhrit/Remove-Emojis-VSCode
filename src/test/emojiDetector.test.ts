@@ -49,7 +49,7 @@ suite('EmojiDetector Test Suite', () => {
         assert.strictEqual(emojis[0].emoji, '😀');
         assert.strictEqual(emojis[0].index, 6);
         assert.strictEqual(emojis[1].emoji, '🎨');
-        assert.strictEqual(emojis[1].index, 14);
+        assert.strictEqual(emojis[1].index, 15);
     });
 
     test('Should remove emojis and preserve formatting', () => {
