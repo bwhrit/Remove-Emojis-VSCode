@@ -1,0 +1,87 @@
+!.*
+out
+dist
+node_modules
+.vscode-test/
+*.vsix
+
+.claude/
+CLAUDE.md
+
+PUBLISHING.md
+vsc-extension-quickstart.md
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build artifacts
+*.tsbuildinfo
+.eslintcache
+
+# Test coverage
+coverage
+.nyc_output
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Package manager locks (keeping only pnpm-lock.yaml)
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# VS Code extension specific
+.vscode-test-web/
+web-ext-artifacts/
+
+# Publishing tokens (extra safety)
+.vsce-token
+.ovsx-token
+vsce-token.txt
+ovsx-token.txt
+
+# Icon sources (if using design files)
+*.psd
+*.ai
+*.sketch
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# macOS specific
+.AppleDouble
+.LSOverride
+
+# Windows specific
+desktop.ini
+ehthumbs.db
+
+# Linux specific
+.directory
+.Trash-*

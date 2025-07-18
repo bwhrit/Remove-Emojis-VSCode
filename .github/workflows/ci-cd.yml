@@ -1,0 +1,186 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Run linter
+      run: pnpm run lint
+
+    - name: Check types
+      run: pnpm run check-types
+
+    - name: Compile extension
+      run: pnpm run compile
+
+    - name: Run tests
+      uses: coactions/setup-xvfb@v1
+      with:
+        run: pnpm test
+      if: runner.os == 'Linux'
+    
+    - name: Run tests (Windows/macOS)
+      run: pnpm test
+      if: runner.os != 'Linux'
+
+  build:
+    name: Build and Package
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Install vsce
+      run: pnpm add -g @vscode/vsce
+
+    - name: Build extension
+      run: pnpm run package
+
+    - name: Package extension
+      run: vsce package --no-dependencies
+
+    - name: Upload VSIX artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: vsix-package
+        path: '*.vsix'
+
+  publish:
+    name: Publish to VS Code Marketplace
+    runs-on: ubuntu-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Install vsce
+      run: pnpm add -g @vscode/vsce
+
+    - name: Build extension
+      run: pnpm run package
+
+    - name: Publish to VS Code Marketplace
+      env:
+        VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      run: |
+        vsce publish -p $VSCE_PAT
+
+    - name: Publish to Open VSX Registry
+      env:
+        OVSX_PAT: ${{ secrets.OVSX_PAT }}
+      run: |
+        pnpm add -g ovsx
+        ovsx publish -p $OVSX_PAT
+      continue-on-error: true
+
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build, publish]
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download VSIX artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: vsix-package
+
+    - name: Get version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Release v${{ steps.get_version.outputs.VERSION }}
+        draft: false
+        prerelease: false
+        files: '*.vsix'
+        body: |
+          ## What's New in v${{ steps.get_version.outputs.VERSION }}
+          
+          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
+          
+          ### Installation
+          
+          #### From VS Code Marketplace
+          1. Open VS Code
+          2. Go to Extensions (Ctrl/Cmd + Shift + X)
+          3. Search for "Remove Emojis"
+          4. Click Install
+          
+          #### From VSIX file
+          1. Download the `.vsix` file from the assets below
+          2. Open VS Code
+          3. Go to Extensions (Ctrl/Cmd + Shift + X)
+          4. Click the "..." menu and select "Install from VSIX..."
+          5. Select the downloaded file
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
