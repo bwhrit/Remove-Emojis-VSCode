@@ -2,7 +2,7 @@
   "name": "remove-emojis",
   "displayName": "Remove Emojis",
   "description": "Removes Emojis and other icons from any type of file.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "Quikturn",
   "icon": "re_icon.png",
   "galleryBanner": {
