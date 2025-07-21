@@ -37,66 +37,39 @@
   "contributes": {
     "commands": [
       {
-        "command": "remove-emojis.removeFromCurrentFile",
-        "title": "Remove Emojis: Current File",
+        "command": "remove-emojis.removeEmojis",
+        "title": "Remove Emojis",
         "category": "Remove Emojis"
       },
       {
-        "command": "remove-emojis.removeFromSelectedFiles",
-        "title": "Remove Emojis: Selected Files",
-        "category": "Remove Emojis"
-      },
-      {
-        "command": "remove-emojis.removeFromFolder",
-        "title": "Remove Emojis: Folder (Non-Recursive)",
-        "category": "Remove Emojis"
-      },
-      {
-        "command": "remove-emojis.removeFromFolderRecursive",
-        "title": "Remove Emojis: Folder (Recursive)",
-        "category": "Remove Emojis"
-      },
-      {
-        "command": "remove-emojis.preview",
-        "title": "Remove Emojis: Preview Changes",
+        "command": "remove-emojis.previewEmojis",
+        "title": "Preview Emoji Removal",
         "category": "Remove Emojis"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "remove-emojis.removeFromCurrentFile",
+          "command": "remove-emojis.removeEmojis",
           "group": "1_modification"
         },
         {
-          "command": "remove-emojis.preview",
+          "command": "remove-emojis.previewEmojis",
           "group": "1_modification"
         }
       ],
       "explorer/context": [
         {
-          "command": "remove-emojis.removeFromSelectedFiles",
-          "when": "explorerResourceIsFolder == false",
-          "group": "7_modification"
-        },
-        {
-          "command": "remove-emojis.removeFromFolder",
-          "when": "explorerResourceIsFolder",
-          "group": "7_modification"
-        },
-        {
-          "command": "remove-emojis.removeFromFolderRecursive",
-          "when": "explorerResourceIsFolder",
+          "command": "remove-emojis.removeEmojis",
           "group": "7_modification"
         }
       ],
       "commandPalette": [
         {
-          "command": "remove-emojis.removeFromCurrentFile",
-          "when": "editorIsOpen"
+          "command": "remove-emojis.removeEmojis"
         },
         {
-          "command": "remove-emojis.preview",
+          "command": "remove-emojis.previewEmojis",
           "when": "editorIsOpen"
         }
       ]
@@ -119,6 +92,21 @@
           "type": "boolean",
           "default": false,
           "description": "Show preview of changes before removing emojis"
+        },
+        "removeEmojis.autoConfirmSingleFile": {
+          "type": "boolean",
+          "default": false,
+          "description": "Skip confirmation dialog for single file operations"
+        },
+        "removeEmojis.showProgressInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show progress in status bar during operations"
+        },
+        "removeEmojis.autoOpenResults": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open results output channel after processing"
         }
       }
     }

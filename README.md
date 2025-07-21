@@ -32,18 +32,27 @@ A powerful VS Code extension that removes emojis and emoticons from any type of 
 
 ## Usage
 
-### Command Palette
-Open the Command Palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows/Linux) and search for:
+### Smart Command
+The extension now uses a single intelligent command that adapts to your context:
 
-- `Remove Emojis: Current File` - Remove emojis from the active editor
-- `Remove Emojis: Selected Files` - Choose multiple files to process
-- `Remove Emojis: Folder (Non-Recursive)` - Process all files in a folder
-- `Remove Emojis: Folder (Recursive)` - Process folder and all subdirectories
-- `Remove Emojis: Preview Changes` - Preview changes before applying
+- **`Remove Emojis`** - Automatically detects what you want to process:
+  - Current file (if editor is active)
+  - Selected files/folders (if selected in explorer)
+  - Specific file/folder (if right-clicked)
+  - File picker (if no context available)
+
+### Quick Preview
+- **`Preview Emoji Removal`** - Quickly preview changes for the current file
 
 ### Context Menu
-- **Editor**: Right-click in any open file to access emoji removal options
-- **Explorer**: Right-click on files or folders in the Explorer sidebar
+- **Editor**: Right-click in any open file for emoji removal options
+- **Explorer**: Right-click on files or folders to process them
+
+### Smart Features
+- **Context Detection**: Automatically understands what you want to process
+- **Confirmation Dialogs**: Safe operation with preview options
+- **Progress Feedback**: Real-time progress with cancellable operations
+- **Smart Folder Processing**: Automatically suggests recursive processing for large folders
 
 ### Examples
 
@@ -66,6 +75,9 @@ Fix: Resolved crash issue
 ### Settings
 - `removeEmojis.excludePatterns`: Array of patterns to exclude when processing folders (default: `["node_modules", ".git", "dist", "out", ".vscode-test"]`)
 - `removeEmojis.showPreviewBeforeRemoval`: Show preview of changes before removing emojis (default: `false`)
+- `removeEmojis.autoConfirmSingleFile`: Skip confirmation dialog for single file operations (default: `false`)
+- `removeEmojis.showProgressInStatusBar`: Show progress in status bar during operations (default: `true`)
+- `removeEmojis.autoOpenResults`: Automatically open results output channel after processing (default: `true`)
 
 ## How It Works
 
