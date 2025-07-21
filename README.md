@@ -98,6 +98,55 @@ pnpm test
 2. Press `F5` to launch a new VS Code window with the extension loaded
 3. Test the commands on sample files
 
+### Release Process
+
+This project uses automated CI/CD with GitHub Actions for releases. The workflow includes:
+
+#### Automatic Release (Recommended)
+1. **Push to main branch**: Automatically triggers version bump (patch) and creates a new tag
+2. **Manual workflow dispatch**: Go to Actions tab and manually trigger with version bump type:
+   - `patch` (default) - for bug fixes
+   - `minor` - for new features
+   - `major` - for breaking changes
+
+#### Manual Release Script
+For local releases, use the provided release script:
+
+```bash
+# Patch release (bug fixes)
+pnpm run release:patch
+
+# Minor release (new features)
+pnpm run release:minor
+
+# Major release (breaking changes)
+pnpm run release:major
+
+# Or specify type manually
+pnpm run release [patch|minor|major]
+```
+
+The release script will:
+1. Bump the version in `package.json`
+2. Run all tests and linting
+3. Build the extension
+4. Create a git commit and tag
+5. Provide instructions for pushing
+
+#### CI/CD Pipeline
+The GitHub Actions workflow automatically:
+- Runs tests on multiple platforms (Ubuntu, Windows, macOS)
+- Performs security audits
+- Builds and packages the extension
+- Publishes to VS Code Marketplace
+- Creates GitHub releases with VSIX files
+- Publishes to Open VSX Registry (if configured)
+
+#### Required Secrets
+Configure these secrets in your GitHub repository:
+- `VSCE_PAT`: VS Code Marketplace Personal Access Token
+- `OVSX_PAT`: Open VSX Registry Personal Access Token (optional)
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
